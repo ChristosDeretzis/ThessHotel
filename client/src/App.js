@@ -3,18 +3,15 @@ import './App.css';
 import Login from './components/Auth/Login/Login';
 import Signup from './components/Auth/SignUp/Signup';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import { useSelector } from 'react-redux';
+import ProtectedRoutes from './routes/ProtectedRoutes';
+import AuthRoutes from './routes/AuthRoutes';
 
 function App() {
-  const user = JSON.parse(localStorage.getItem("user"));
+  const auth = useSelector(state => state.auth);
   return (
     <div className="App">
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </Router>
-      
+      {auth.isLoggedIn ? <ProtectedRoutes /> : <AuthRoutes />}
     </div>
   );
 }

@@ -13,6 +13,27 @@ import Typography from '@mui/material/Typography';
 import { createTheme } from '@mui/material/styles';
 import { messageActions } from "../../../store/message-slice";
 import { authActions, signup } from "../../../store/auth-slice";
+import * as yup from 'yup';
+import { useFormik } from "formik";
+import { Alert } from "@mui/material";
+
+const passwordRegEx = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#%&])(?=.{8,})/
+
+const validationSchema = yup.object().shape({
+    username: yup.string()
+        .required('Please Enter the Username')
+        .min(2, 'username too short')
+        .max(40, 'username too long'),
+    email: yup.string()
+        .email('Invalid Email')
+        .required('Please enter your Email'),
+    password: yup.string()
+        .required('Please enter your Password')
+        .matches(
+            passwordRegEx,
+            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+        ),
+});
 
 const Signup = (props) => {
     const [successful, setSuccessful] = useState(false);
@@ -22,14 +43,24 @@ const Signup = (props) => {
         dispatch(messageActions.clearMessage());
     }, [dispatch]);
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
+    const formik = useFormik({
+      initialValues: {
+        username: '',
+        email: '',
+        password: ''
+      },
+      validationSchema: validationSchema,
+      onSubmit: (values) => {
+        handleSignupSubmit(values);
+      }
+    })
+
+    const handleSignupSubmit = (values) => {
         setSuccessful(false);
-        const data = new FormData(event.currentTarget);
         const signUpRequest = {
-            username: data.get('username'),
-            email: data.get('email'),
-            password: data.get('password')
+            username: values.username,
+            email: values.email,
+            password: values.password
         };
 
         dispatch(signup(signUpRequest))
@@ -41,6 +72,7 @@ const Signup = (props) => {
                 setSuccessful(false);
             });
         
+      this.props.history.push("/");
     };
 
   return (
@@ -76,35 +108,43 @@ const Signup = (props) => {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
+            <Box component="form" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
             <TextField
                 margin="normal"
-                required
                 fullWidth
                 id="username"
                 label="Username"
                 name="username"
                 autoFocus
+                value={formik.values.username}
+                onChange={formik.handleChange}
+                error={formik.touched.username && Boolean(formik.errors.username)}
+                helperText={formik.touched.username && formik.errors.username}
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 id="email"
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                autoFocus
+                value={formik.values.email}
+                onChange={formik.handleChange}
+                error={formik.touched.email && Boolean(formik.errors.email)}
+                helperText={formik.touched.email && formik.errors.email}
               />
               <TextField
                 margin="normal"
-                required
                 fullWidth
                 name="password"
                 label="Password"
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                error={formik.touched.password && Boolean(formik.errors.password)}
+                helperText={formik.touched.password && formik.errors.password}
               />
               <Button
                 type="submit"
@@ -121,9 +161,14 @@ const Signup = (props) => {
                   </Link>
                 </Grid>
               </Grid>
+
+              {message && 
+                  <Alert severity="error">
+                    <strong>{message}</strong>
+                  </Alert>
+              }
             </Box>
           </Box>
-          <p>{message}</p>
         </Grid>
       </Grid>
   );
