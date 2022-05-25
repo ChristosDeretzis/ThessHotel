@@ -19,7 +19,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class AuthService {
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -39,9 +39,7 @@ public class UserService {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
 
-        Optional<User> checkedUser = userRepository.findByEmail(signUpRequest.getEmail());
-
-        if(checkedUser.isPresent()) {
+        if(userRepository.existsByEmailOrUsername(signUpRequest.getEmail(), signUpRequest.getUsername())) {
             throw new AlreadyExistsException("User already Exists");
         }
 
