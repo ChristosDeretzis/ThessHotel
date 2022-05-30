@@ -1,11 +1,18 @@
 package com.thesshotel.demo.dtos;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
 public class LoginRequest {
 
     @NotNull

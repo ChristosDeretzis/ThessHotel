@@ -2,8 +2,10 @@ package com.thesshotel.demo.config;
 
 import com.thesshotel.demo.repositories.UserRepository;
 import com.thesshotel.demo.security.JwtTokenFilter;
+import com.thesshotel.demo.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 @EnableWebSecurity(debug = true)
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private UserRepository userRepo;

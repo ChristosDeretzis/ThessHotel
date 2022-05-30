@@ -1,11 +1,18 @@
 package com.thesshotel.demo.dtos;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Getter
+@Setter
 public class SignUpRequest {
 
     @NotNull
@@ -22,28 +29,4 @@ public class SignUpRequest {
     @Length(min = 5)
     @ApiModelProperty(notes = "The password of the user", example = "hsgT67^7")
     private String password;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

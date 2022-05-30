@@ -1,9 +1,8 @@
 package com.thesshotel.demo.services;
 
 import com.thesshotel.demo.dtos.LoginRequest;
-import com.thesshotel.demo.dtos.LoginResponse;
 import com.thesshotel.demo.dtos.SignUpRequest;
-import com.thesshotel.demo.dtos.SignUpResponse;
+import com.thesshotel.demo.dtos.AuthResponse;
 import com.thesshotel.demo.exceptions.AlreadyExistsException;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
@@ -14,9 +13,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-
-import java.util.Optional;
 
 @Service
 public class AuthService {
@@ -33,7 +29,7 @@ public class AuthService {
     @Autowired
     JwtTokenUtil jwtUtil;
 
-    public SignUpResponse signUp(SignUpRequest signUpRequest) {
+    public AuthResponse signUp(SignUpRequest signUpRequest) {
         User user = new User();
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
@@ -44,14 +40,14 @@ public class AuthService {
         }
 
         String accessToken = jwtUtil.generateAccessToken(user);
-        SignUpResponse signUpResponse = new SignUpResponse(user.getEmail(), user.getUsername(), accessToken);
+        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getUsername(), accessToken);
 
         userRepository.save(user);
 
-        return signUpResponse;
+        return authResponse;
     }
 
-    public LoginResponse login(LoginRequest loginRequest) {
+    public AuthResponse login(LoginRequest loginRequest) {
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword())
         );
@@ -59,7 +55,7 @@ public class AuthService {
         User user = (User) authentication.getPrincipal();
         String accessToken = jwtUtil.generateAccessToken(user);
 
-        LoginResponse response = new LoginResponse(user.getEmail(), accessToken);
+        AuthResponse response = new AuthResponse(user.getEmail(), user.getUsername(), accessToken);
         return response;
     }
 }

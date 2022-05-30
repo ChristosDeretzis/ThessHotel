@@ -1,43 +1,18 @@
 package com.thesshotel.demo.dtos;
 
+import lombok.*;
+
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@EqualsAndHashCode
 public class ErrorResponse {
 
     private String message;
     private int status;
     private LocalDateTime timestamp;
-
-    public ErrorResponse(String message, int status, LocalDateTime timestamp) {
-        this.message = message;
-        this.status = status;
-        this.timestamp = timestamp;
-    }
-
-    public ErrorResponse() {
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
 }

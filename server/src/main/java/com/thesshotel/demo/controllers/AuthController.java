@@ -32,13 +32,8 @@ public class AuthController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     @PostMapping("/signup")
-    private SignUpResponse signUp(@RequestBody SignUpRequest signUpRequest){
-        try {
-            SignUpResponse signUpResponse = authService.signUp(signUpRequest);
-            return signUpResponse;
-        }  catch (AlreadyExistsException e) {
-            throw new AlreadyExistsException("User already exists");
-        }
+    private AuthResponse signUp(@RequestBody SignUpRequest signUpRequest){
+        return authService.signUp(signUpRequest);
     }
 
     @ApiOperation(value = "This method is used to login a user")
@@ -48,10 +43,9 @@ public class AuthController {
             @ApiResponse(code = 500, message = "Internal Server Error")
     })
     @PostMapping("/login")
-    private LoginResponse login(@RequestBody @Valid LoginRequest loginRequest) throws Exception {
+    private AuthResponse login(@RequestBody @Valid LoginRequest loginRequest) throws Exception {
         try {
-            LoginResponse loginResponse = authService.login(loginRequest);
-            return loginResponse;
+            return authService.login(loginRequest);
         } catch (BadCredentialsException ex) {
             throw new Exception("Bad Credentials");
         }
