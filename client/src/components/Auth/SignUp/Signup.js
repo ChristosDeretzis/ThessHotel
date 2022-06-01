@@ -72,7 +72,7 @@ const Signup = (props) => {
                 setSuccessful(false);
             });
         
-      this.props.history.push("/");
+      props.history.push("/");
     };
 
   return (

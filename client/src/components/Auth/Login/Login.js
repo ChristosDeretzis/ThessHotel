@@ -59,7 +59,7 @@ const Login = (props) => {
       .unwrap()
       .then(() => {
           setSuccessful(true);
-          navigate("/");
+          window.location.href = "/";
       })
       .catch(() => {
           setSuccessful(false);
