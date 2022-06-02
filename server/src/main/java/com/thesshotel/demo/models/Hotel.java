@@ -61,6 +61,6 @@ public class Hotel {
     @JsonBackReference(value = "hotel-reviews")
     private List<Review> reviews = new ArrayList<>();
 
-    @OneToOne(mappedBy = "hotelProperty")
+    @OneToOne(mappedBy = "hotel")
     private User owner;
 }

@@ -17,7 +17,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "users")
+@Table(name = "users", schema="thess_hotel")
 public class User implements UserDetails {
 
     @Id
@@ -40,7 +40,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @Column(name = "date_of_birth")
-    private Date date_of_birth;
+    private Date dateOfBirth;
 
     @Column(name = "country")
     private String country;
@@ -55,13 +55,10 @@ public class User implements UserDetails {
     private String strAddress;
 
     @Column(name = "str_no")
-    private String strNumber;
+    private Integer strNumber;
 
     @Column(name = "zip_code")
-    private String zipCode;
-
-    @Column(name = "isHotelOwner")
-    private Boolean isHotelOwner;
+    private Integer zipCode;
 
     @OneToMany(mappedBy = "user")
     @JsonBackReference(value = "user-reservations")
