@@ -1,4 +1,4 @@
-package com.thesshotel.demo.Utils;
+package com.thesshotel.demo.Utils.Date;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

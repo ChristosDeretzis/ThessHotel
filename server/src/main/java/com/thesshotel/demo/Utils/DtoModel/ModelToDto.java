@@ -1,11 +1,11 @@
-package com.thesshotel.demo.Utils;
+package com.thesshotel.demo.Utils.DtoModel;
 
 import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.models.User;
 
 public class ModelToDto {
 
-    public static UserDto convertUserDtoToModel(User user) {
+    public static UserDto convertUserModelToDto(User user) {
         return UserDto.builder()
                 .username(user.getUsername())
                 .email(user.getEmail())

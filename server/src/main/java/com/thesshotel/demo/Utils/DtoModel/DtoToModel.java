@@ -1,4 +1,4 @@
-package com.thesshotel.demo.Utils;
+package com.thesshotel.demo.Utils.DtoModel;
 
 import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.models.User;

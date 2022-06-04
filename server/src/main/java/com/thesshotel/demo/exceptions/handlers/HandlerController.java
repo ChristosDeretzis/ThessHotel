@@ -19,7 +19,7 @@ public class HandlerController {
 
         errorResponse.setMessage(exception.getMessage());
         errorResponse.setStatus(HttpStatus.NOT_FOUND.value());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(LocalDateTime.now().toString());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
@@ -30,7 +30,7 @@ public class HandlerController {
 
         errorResponse.setMessage(exception.getMessage());
         errorResponse.setStatus(HttpStatus.UNPROCESSABLE_ENTITY.value());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(LocalDateTime.now().toString());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
     }
@@ -41,7 +41,7 @@ public class HandlerController {
 
         errorResponse.setMessage(exception.getMessage());
         errorResponse.setStatus(HttpStatus.BAD_REQUEST.value());
-        errorResponse.setTimestamp(LocalDateTime.now());
+        errorResponse.setTimestamp(LocalDateTime.now().toString());
 
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
