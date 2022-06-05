@@ -7,7 +7,6 @@ import com.thesshotel.demo.exceptions.NotFoundException;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
