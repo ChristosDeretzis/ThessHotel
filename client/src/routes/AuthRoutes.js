@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
-import Login from "../components/Auth/Login/Login";
-import Signup from "../components/Auth/SignUp/Signup";
+import Login from "../containers/Auth/Login";
+import Signup from "../containers/Auth/Signup";
 
 const AuthRoutes = () => {
     return (

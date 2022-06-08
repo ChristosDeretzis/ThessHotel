@@ -7,9 +7,9 @@ public class ModelToDto {
 
     public static UserDto convertUserModelToDto(User user) {
         return UserDto.builder()
+                .id(user.getId())
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .password(user.getPassword())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .dateOfBirth(user.getDateOfBirth())

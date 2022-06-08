@@ -15,6 +15,9 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/user-slice';
+import { useNavigate } from 'react-router';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -62,13 +65,23 @@ export default function NavBar() {
 
   const isMenuOpen = Boolean(anchorEl);
 
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
+
+
+  const handleAccountSettingsClick = () => {
+    window.location.href="/accountSettings";
   };
+
+  const handleOnLogoutClick = () => {
+    dispatch(logout()).unwrap();
+    navigate("/login");
+}
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -85,10 +98,9 @@ export default function NavBar() {
         horizontal: 'right',
       }}
       open={isMenuOpen}
-      onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleAccountSettingsClick}>Account Settings</MenuItem>
+      <MenuItem onClick={handleOnLogoutClick}>Logout</MenuItem>
     </Menu>
   );
 
@@ -101,6 +113,7 @@ export default function NavBar() {
             noWrap
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' }}}
+            onClick={() => window.location.href="/home"}
           >
             Thess Hotel
           </Typography>

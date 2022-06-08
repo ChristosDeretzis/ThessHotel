@@ -1,17 +1,18 @@
 import logo from './logo.svg';
 import './App.css';
-import Login from './components/Auth/Login/Login';
-import Signup from './components/Auth/SignUp/Signup';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import ProtectedRoutes from './routes/ProtectedRoutes';
 import AuthRoutes from './routes/AuthRoutes';
+import Account from './pages/Account/Account';
 
 function App() {
-  const auth = useSelector(state => state.auth);
+  const user = useSelector(state => state.user);
+  console.log(user);
   return (
     <div className="App">
-      {auth.isLoggedIn ? <ProtectedRoutes /> : <AuthRoutes />}
+      {user.isLoggedIn ? <ProtectedRoutes /> : <AuthRoutes />}
+      {/* <Account /> */}
     </div>
   );
 }

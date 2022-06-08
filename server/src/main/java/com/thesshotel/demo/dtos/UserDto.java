@@ -14,14 +14,14 @@ import java.util.Date;
 @EqualsAndHashCode
 public class UserDto {
 
+    @ApiModelProperty(notes = "The unique id of the user", example = "34")
+    private Integer id;
+
     @ApiModelProperty(notes = "The username of the user", example = "pako78")
     private String username;
 
     @ApiModelProperty(notes = "The email of the user", example = "example@gmail.com")
     private String email;
-
-    @ApiModelProperty(notes = "The password of the user", example = "Yhr758(8")
-    private String password;
 
     @ApiModelProperty(notes = "The first name of the user", example = "John")
     private String firstName;

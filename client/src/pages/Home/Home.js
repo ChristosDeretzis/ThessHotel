@@ -1,10 +1,10 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { logout } from "../../store/auth-slice";
+import { logout } from "../../store/user-slice";
 
 const Home = (props) => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("userData"));
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -16,9 +16,7 @@ const Home = (props) => {
 
     return (
         <div>
-            <h1>Email: {user.email}</h1>
-            <p>AccessToken: {user.accessToken}</p>
-            <button onClick={handleOnLogoutClick}>Logout</button>
+            <h1>Hello {user.username}</h1>
         </div>
         
     );

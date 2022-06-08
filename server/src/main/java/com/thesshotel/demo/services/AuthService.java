@@ -1,8 +1,10 @@
 package com.thesshotel.demo.services;
 
+import com.thesshotel.demo.Utils.DtoModel.ModelToDto;
 import com.thesshotel.demo.dtos.LoginRequest;
 import com.thesshotel.demo.dtos.SignUpRequest;
 import com.thesshotel.demo.dtos.AuthResponse;
+import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.exceptions.AlreadyExistsException;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
@@ -40,7 +42,8 @@ public class AuthService {
         }
 
         String accessToken = jwtUtil.generateAccessToken(user);
-        AuthResponse authResponse = new AuthResponse(user.getEmail(), user.getUsername(), accessToken);
+        UserDto userDto = ModelToDto.convertUserModelToDto(user);
+        AuthResponse authResponse = new AuthResponse(userDto, accessToken);
 
         userRepository.save(user);
 
@@ -53,9 +56,11 @@ public class AuthService {
         );
 
         User user = (User) authentication.getPrincipal();
+        UserDto userDto = ModelToDto.convertUserModelToDto(user);
+
         String accessToken = jwtUtil.generateAccessToken(user);
 
-        AuthResponse response = new AuthResponse(user.getEmail(), user.getUsername(), accessToken);
+        AuthResponse response = new AuthResponse(userDto, accessToken);
         return response;
     }
 }

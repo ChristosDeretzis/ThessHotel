@@ -1,17 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import AuthService from "../services/auth.service";
+import UserService from "../services/user.service";
 import { messageActions } from "./message-slice";
 
-const user = JSON.parse(localStorage.getItem("user"));
+const userDetails = JSON.parse(localStorage.getItem("userData"));
 
 export const signup = createAsyncThunk(
-    "auth/signup", 
+    "user/signup", 
     async (signupBody, thunkAPI) => {
         try{
-            const response = await AuthService.signup(signupBody);
+            const response = await UserService.signup(signupBody);
             console.log(response);
             thunkAPI.dispatch(messageActions.setMessage("User registered !!"));
-            return { user: response };
+            return { data: response };
         } catch(error) {
           console.log(error);
             const message = (error.response &&
@@ -26,12 +26,12 @@ export const signup = createAsyncThunk(
 );
 
 export const login = createAsyncThunk(
-    "auth/login",
+    "user/login",
     async (loginBody, thunkAPI) => {
         try{
-            const response = await AuthService.login(loginBody);
+            const response = await UserService.login(loginBody);
             thunkAPI.dispatch(messageActions.setMessage("User is logged in !!"));
-            return { user: response };
+            return { data: response };
         } catch(error) {
             const message = (error.response &&
                 error.response.data &&
@@ -44,40 +44,64 @@ export const login = createAsyncThunk(
     }
 );
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-    await AuthService.logout();
+export const logout = createAsyncThunk("user/logout", async () => {
+    await UserService.logout();
   });
 
-const initialState = user
-  ? { isLoggedIn: true, user }
-  : { isLoggedIn: false, user: null };
+export const updateUser = createAsyncThunk("user/updateUser", async (updateUserBody, thunkAPI) => {
+  try{
+    const response = await UserService.updateUser(updateUserBody);
+    console.log(response);
+    thunkAPI.dispatch(messageActions.setMessage("User is updated"));
+    return { data: response };
+} catch(error) {
+    const message = (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString();
+    thunkAPI.dispatch(messageActions.setMessage(message));
+    return thunkAPI.rejectWithValue();  
+}
+})
 
-const authSlice = createSlice({
-    name: "auth",
+const initialState = userDetails
+  ? { isLoggedIn: true, userDetails }
+  : { isLoggedIn: false, userDetails: null };
+
+const userSlice = createSlice({
+    name: "user",
     initialState,
     extraReducers: {
       [signup.fulfilled]: (state, action) => {
         state.isLoggedIn = true;
-        state.user = action.payload.user;
+        state.userDetails = action.payload.user;
       },
       [signup.rejected]: (state, action) => {
         state.isLoggedIn = false;
       },
       [login.fulfilled]: (state, action) => {
         state.isLoggedIn = true;
-        state.user = action.payload.user;
+        state.userDetails = action.payload.user;
       },
       [login.rejected]: (state, action) => {
         state.isLoggedIn = false;
-        state.user = null;
+        state.userDetails = null;
       },
       [logout.fulfilled]: (state, action) => {
         state.isLoggedIn = false;
-        state.user = null;
+        state.userDetails = null;
       },
+      [updateUser.fulfilled]: (state, action) => {
+        state.isLoggedIn = true;
+        state.userDetails = action.payload.data;
+      },
+      [updateUser.rejected]: (state, action) => {
+        state.isLoggedIn = true;
+      }
     },
   });
 
-export const authActions = authSlice.actions;
-export default authSlice;
+export const userActions = userSlice.actions;
+export default userSlice;
 

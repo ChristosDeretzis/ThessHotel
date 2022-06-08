@@ -1,10 +1,12 @@
 package com.thesshotel.demo;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thesshotel.demo.Utils.DtoModel.ModelToDto;
 import com.thesshotel.demo.controllers.AuthController;
 import com.thesshotel.demo.dtos.LoginRequest;
 import com.thesshotel.demo.dtos.SignUpRequest;
 import com.thesshotel.demo.dtos.AuthResponse;
+import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.exceptions.AlreadyExistsException;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
@@ -49,6 +51,7 @@ public class AuthControllerTest {
     JwtTokenUtil jwtTokenUtil;
 
     private static User user;
+    private static UserDto userDto;
     private static SignUpRequest signUpRequest;
     private static LoginRequest loginRequest;
 
@@ -59,6 +62,8 @@ public class AuthControllerTest {
                 .username("chris")
                 .password("Yah6tvh*98")
                 .build();
+
+        userDto = ModelToDto.convertUserModelToDto(user);
 
         signUpRequest = SignUpRequest.builder()
                 .email(user.getEmail())
@@ -77,8 +82,7 @@ public class AuthControllerTest {
         String token = jwtTokenUtil.generateAccessToken(user);
 
         AuthResponse authResponse = new AuthResponse().builder()
-                .email(user.getEmail())
-                .username(user.getUsername())
+                .user(userDto)
                 .accessToken(token)
                 .build();
 
@@ -94,8 +98,8 @@ public class AuthControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.email", Matchers.is(user.getEmail())))
-                .andExpect(jsonPath("$.username", Matchers.is(user.getUsername())))
+                .andExpect(jsonPath("$.user.email", Matchers.is(user.getEmail())))
+                .andExpect(jsonPath("$.user.username", Matchers.is(user.getUsername())))
                 .andExpect(jsonPath("$.accessToken", Matchers.is(token)));
     }
 
@@ -121,8 +125,7 @@ public class AuthControllerTest {
         String token = jwtTokenUtil.generateAccessToken(user);
 
         AuthResponse authResponse = new AuthResponse().builder()
-                .email(user.getEmail())
-                .username(user.getUsername())
+                .user(userDto)
                 .accessToken(token)
                 .build();
 
@@ -138,8 +141,8 @@ public class AuthControllerTest {
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.email", Matchers.is(user.getEmail())))
-                .andExpect(jsonPath("$.username", Matchers.is(user.getUsername())))
+                .andExpect(jsonPath("$.user.email", Matchers.is(user.getEmail())))
+                .andExpect(jsonPath("$.user.username", Matchers.is(user.getUsername())))
                 .andExpect(jsonPath("$.accessToken", Matchers.is(token)));
     }
 

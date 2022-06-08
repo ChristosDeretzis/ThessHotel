@@ -20,7 +20,7 @@ public class UserService {
         return userRepository.findById(id)
                 .map(user -> {
                     User updateUser = DtoToModel.convertUserDtoToModel(newUser);
-                    updateUser.setId(id);
+                    updateUser.setPassword(user.getPassword());
                     userRepository.save(updateUser);
                     return newUser;
                 })
