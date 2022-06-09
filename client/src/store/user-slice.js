@@ -1,3 +1,4 @@
+import { formLabelClasses } from "@mui/material";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import UserService from "../services/user.service";
 import { messageActions } from "./message-slice";
@@ -51,10 +52,9 @@ export const logout = createAsyncThunk("user/logout", async () => {
 export const updateUser = createAsyncThunk("user/updateUser", async (updateUserBody, thunkAPI) => {
   try{
     const response = await UserService.updateUser(updateUserBody);
-    console.log(response);
     thunkAPI.dispatch(messageActions.setMessage("User is updated"));
     return { data: response };
-} catch(error) {
+  } catch(error) {
     const message = (error.response &&
         error.response.data &&
         error.response.data.message) ||
@@ -62,8 +62,24 @@ export const updateUser = createAsyncThunk("user/updateUser", async (updateUserB
       error.toString();
     thunkAPI.dispatch(messageActions.setMessage(message));
     return thunkAPI.rejectWithValue();  
-}
-})
+  }
+});
+
+export const deleteUser = createAsyncThunk("user/deleteUser", async (userId, thunkAPI) => {
+  try{
+    const response = await UserService.deleteUser(userId);
+    thunkAPI.dispatch(messageActions.setMessage("User is deleted"));
+    return { data: response };
+  } catch(error) {
+    const message = (error.response &&
+        error.response.data &&
+        error.response.data.message) ||
+      error.message ||
+      error.toString();
+    thunkAPI.dispatch(messageActions.setMessage(message));
+    return thunkAPI.rejectWithValue();  
+  }
+});
 
 const initialState = userDetails
   ? { isLoggedIn: true, userDetails }
@@ -98,6 +114,13 @@ const userSlice = createSlice({
       },
       [updateUser.rejected]: (state, action) => {
         state.isLoggedIn = true;
+      },
+      [deleteUser.fulfilled]: (state, action) => {
+        state.isLoggedIn = formLabelClasses;
+        state.userDetails = null;
+      },
+      [deleteUser.rejected]: (state, action) => {
+        
       }
     },
   });

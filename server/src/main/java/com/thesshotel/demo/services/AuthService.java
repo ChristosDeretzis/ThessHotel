@@ -33,6 +33,7 @@ public class AuthService {
 
     public AuthResponse signUp(SignUpRequest signUpRequest) {
         User user = new User();
+
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
@@ -41,11 +42,13 @@ public class AuthService {
             throw new AlreadyExistsException("User already Exists");
         }
 
+        userRepository.save(user);
+        
         String accessToken = jwtUtil.generateAccessToken(user);
         UserDto userDto = ModelToDto.convertUserModelToDto(user);
         AuthResponse authResponse = new AuthResponse(userDto, accessToken);
 
-        userRepository.save(user);
+
 
         return authResponse;
     }

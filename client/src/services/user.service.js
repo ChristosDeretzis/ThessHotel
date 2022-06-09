@@ -38,6 +38,15 @@ const updateUser = async (updateUserBody) => {
     return response.data;
 }
 
+const deleteUser = async (userId) => {
+    const response = await axios.delete(API_URL + "user/" + userId, { headers: authHeader() });
+
+    if(response.status == 200) {
+        localStorage.removeItem("userData");
+        localStorage.removeItem("accessToken");
+    }
+}
+
 const logout = () => {
     localStorage.removeItem("userData");
     localStorage.removeItem("accessToken");
@@ -47,7 +56,8 @@ const UserService = {
     signup,
     login,
     logout,
-    updateUser
+    updateUser,
+    deleteUser
 }
 
 export default UserService;
