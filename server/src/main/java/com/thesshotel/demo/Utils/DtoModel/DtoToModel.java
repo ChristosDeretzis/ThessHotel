@@ -1,13 +1,20 @@
 package com.thesshotel.demo.Utils.DtoModel;
 
 import com.thesshotel.demo.dtos.UserDto;
+import com.thesshotel.demo.models.Role;
 import com.thesshotel.demo.models.User;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.thesshotel.demo.repositories.RoleRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class DtoToModel {
 
     public static User convertUserDtoToModel(UserDto userDto) {
+
         return User.builder()
                 .id(userDto.getId())
                 .username(userDto.getUsername())

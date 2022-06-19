@@ -6,7 +6,9 @@ import com.thesshotel.demo.dtos.SignUpRequest;
 import com.thesshotel.demo.dtos.AuthResponse;
 import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.exceptions.AlreadyExistsException;
+import com.thesshotel.demo.models.Role;
 import com.thesshotel.demo.models.User;
+import com.thesshotel.demo.repositories.RoleRepository;
 import com.thesshotel.demo.repositories.UserRepository;
 import com.thesshotel.demo.security.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class AuthService {
     UserRepository userRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     AuthenticationManager authManager;
 
     @Autowired
@@ -33,10 +38,12 @@ public class AuthService {
 
     public AuthResponse signUp(SignUpRequest signUpRequest) {
         User user = new User();
+        Role role = roleRepository.findByName("USER");
 
         user.setUsername(signUpRequest.getUsername());
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
+        user.addRole(role);
 
         if(userRepository.existsByEmailOrUsername(signUpRequest.getEmail(), signUpRequest.getUsername())) {
             throw new AlreadyExistsException("User already Exists");

@@ -15,7 +15,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import MailIcon from '@mui/icons-material/Mail';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../store/user-slice';
 import { useNavigate } from 'react-router';
 
@@ -59,10 +59,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function NavBar() {
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+const NavBar = (props) => {
+  const user = useSelector(state => state.user);
+  const roles = user.userDetails.roles;
 
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const isMenuOpen = Boolean(anchorEl);
 
   const dispatch = useDispatch();
@@ -78,6 +79,9 @@ export default function NavBar() {
     window.location.href="/accountSettings";
   };
 
+  const handleHotelSettingsClick = () => {
+    window.location.href="/hotelSettings";
+  };
   const handleOnLogoutClick = () => {
     dispatch(logout()).unwrap();
     navigate("/login");
@@ -100,7 +104,9 @@ export default function NavBar() {
       open={isMenuOpen}
     >
       <MenuItem onClick={handleAccountSettingsClick}>Account Settings</MenuItem>
+      {roles.includes("HOTEL_OWNER") && (<MenuItem onClick={handleHotelSettingsClick}>Hotel Settings</MenuItem>)}
       <MenuItem onClick={handleOnLogoutClick}>Logout</MenuItem>
+      
     </Menu>
   );
 
@@ -137,3 +143,5 @@ export default function NavBar() {
     </Box>
   );
 }
+
+export default NavBar;

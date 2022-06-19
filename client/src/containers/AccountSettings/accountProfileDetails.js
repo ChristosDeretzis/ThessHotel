@@ -5,8 +5,15 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Divider,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  FormLabel,
   Grid,
+  Radio,
+  RadioGroup,
   TextField
 } from '@mui/material';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
@@ -30,6 +37,7 @@ export const AccountProfileDetails = (props) => {
 
   const [isUpdateSuccessful, setUpdateSuccessfull] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hotelOwnerValue, setHotelOwnerValue] = useState(user.roles.includes("HOTEL_OWNER") ? "yes" : "no");
 
   const [values, setValues] = useState({
     id: user.id,
@@ -43,10 +51,23 @@ export const AccountProfileDetails = (props) => {
     city: user.city,
     strAddress: user.strAddress,
     strNumber: user.strNumber,
-    zipCode: user.zipCode
+    zipCode: user.zipCode,
+    roles: user.roles
   });
 
   const handleSubmit = () => {
+    if(hotelOwnerValue === "yes"){
+      setValues({
+        ...values,
+        roles: ["USER", "HOTEL_OWNER"]
+      });
+    } else {
+      setValues({
+        ...values,
+        roles: ["USER"]
+      });
+    }
+    
     dispatch(updateUser(values))
     .unwrap()
     .then((res) => {
@@ -68,6 +89,11 @@ export const AccountProfileDetails = (props) => {
       [event.target.name]: event.target.value
     });
   };
+
+  const handleHotelOwnerChange = (event) => {
+
+    setHotelOwnerValue(event.target.value);
+  }
 
   return (
     <form
@@ -256,6 +282,25 @@ export const AccountProfileDetails = (props) => {
                 variant="outlined"
                 type="number"
               />
+            </Grid>
+            <Grid
+              item
+              md={6}
+              xs={12}
+            >
+              <FormControl>
+                <FormLabel id="demo-controlled-radio-buttons-group" >Are you a hotel owner ?</FormLabel>
+                <RadioGroup
+                  row
+                  aria-labelledby="demo-controlled-radio-buttons-group"
+                  name="controlled-radio-buttons-group"
+                  value={hotelOwnerValue}
+                  onClick={handleHotelOwnerChange}
+                >
+                  <FormControlLabel value="yes" control={<Radio />} label="Yes" />
+                  <FormControlLabel value="no" control={<Radio />} label="No" />
+                </RadioGroup>
+              </FormControl>
             </Grid>
           </Grid>
         </CardContent>

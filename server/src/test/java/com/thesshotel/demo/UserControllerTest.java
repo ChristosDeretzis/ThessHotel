@@ -6,6 +6,7 @@ import com.thesshotel.demo.Utils.DtoModel.ModelToDto;
 import com.thesshotel.demo.config.SpringSecurityWebAuxTestConfig;
 import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.exceptions.NotFoundException;
+import com.thesshotel.demo.models.Role;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
 import com.thesshotel.demo.security.JwtTokenUtil;
@@ -21,6 +22,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -49,9 +53,13 @@ public class UserControllerTest {
 
     private User user;
     private UserDto userDto, newUserDto;
+    private Set<Role> roles = new HashSet<>();
 
     @BeforeEach
     public void setUp() {
+        roles.add(new Role(1, "USER"));
+        roles.add(new Role(2, "HOTEL_OWNER"));
+
         user = new User().builder()
                 .id(1)
                 .username("chris99")
@@ -66,6 +74,7 @@ public class UserControllerTest {
                 .strAddress("Egnatias")
                 .strNumber(34)
                 .zipCode(54248)
+                .roles(roles)
                 .build();
 
         userDto = ModelToDto.convertUserModelToDto(user);
@@ -100,7 +109,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.state", Matchers.is("Central Macedonia")))
                 .andExpect(jsonPath("$.strAddress", Matchers.is("Egnatias")))
                 .andExpect(jsonPath("$.strNumber", Matchers.is(34)))
-                .andExpect(jsonPath("$.zipCode", Matchers.is(54248)));
+                .andExpect(jsonPath("$.zipCode", Matchers.is(54248)))
+                .andExpect(jsonPath("$.roles[*]", Matchers.containsInAnyOrder("USER", "HOTEL_OWNER")));
     }
 
     @Test
@@ -151,7 +161,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.state", Matchers.is("Attiki")))
                 .andExpect(jsonPath("$.strAddress", Matchers.is("Katechaki")))
                 .andExpect(jsonPath("$.strNumber", Matchers.is(45)))
-                .andExpect(jsonPath("$.zipCode", Matchers.is(45364)));
+                .andExpect(jsonPath("$.zipCode", Matchers.is(45364)))
+                .andExpect(jsonPath("$.roles[*]", Matchers.containsInAnyOrder("USER", "HOTEL_OWNER")));
     }
 
     @Test
@@ -203,7 +214,8 @@ public class UserControllerTest {
                 .andExpect(jsonPath("$.state", Matchers.is("Attiki")))
                 .andExpect(jsonPath("$.strAddress", Matchers.is("Katechaki")))
                 .andExpect(jsonPath("$.strNumber", Matchers.is(45)))
-                .andExpect(jsonPath("$.zipCode", Matchers.is(45364)));
+                .andExpect(jsonPath("$.zipCode", Matchers.is(45364)))
+                .andExpect(jsonPath("$.roles[*]", Matchers.containsInAnyOrder("USER", "HOTEL_OWNER")));
     }
 
     @Test

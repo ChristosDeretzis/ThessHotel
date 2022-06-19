@@ -8,6 +8,7 @@ import com.thesshotel.demo.dtos.SignUpRequest;
 import com.thesshotel.demo.dtos.AuthResponse;
 import com.thesshotel.demo.dtos.UserDto;
 import com.thesshotel.demo.exceptions.AlreadyExistsException;
+import com.thesshotel.demo.models.Role;
 import com.thesshotel.demo.models.User;
 import com.thesshotel.demo.repositories.UserRepository;
 import com.thesshotel.demo.security.JwtTokenUtil;
@@ -25,6 +26,8 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.HashSet;
 
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
 import static org.hamcrest.Matchers.*;
@@ -61,6 +64,7 @@ public class AuthControllerTest {
                 .email("deretzischris@gmail.com")
                 .username("chris")
                 .password("Yah6tvh*98")
+                .roles(new HashSet<Role>())
                 .build();
 
         userDto = ModelToDto.convertUserModelToDto(user);

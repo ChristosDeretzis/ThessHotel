@@ -4,7 +4,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.Column;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -49,4 +51,6 @@ public class UserDto {
 
     @ApiModelProperty(notes = "The zip code of the user", example = "45624")
     private Integer zipCode;
+
+    private List<String> roles = new ArrayList<>();
 }
